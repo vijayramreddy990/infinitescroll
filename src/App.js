@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Loading from "./loading.gif";
 
 const App = () => {
   const [photos, setPhotos] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   const fetchPhotos = async (pageNumber) => {
     const Access_Key = "SFtcWMGqVvtMfBTG_1ua5UzL4Ydx5LFmB5hMfDvpZ1I";
@@ -13,11 +14,27 @@ const App = () => {
     const data = await res.json();
     console.log(data);
     setPhotos((prevData) => [...prevData, ...data]);
+    setLoading(true);
   };
 
   useEffect(() => {
     fetchPhotos(pageNumber);
   }, [pageNumber]);
+
+  const pageEnd = useRef();
+  useEffect(() => {
+    if (loading) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            loadMore();
+          }
+        },
+        { threshold: 1 }
+      );
+      observer.observe(pageEnd.current);
+    }
+  }, [loading]);
 
   const loadMore = () => {
     setPageNumber((prevPageNumber) => prevPageNumber + 1);
@@ -38,7 +55,9 @@ const App = () => {
       </div>
       <h3>{photos.length}</h3>
       <div>
-        <button onClick={loadMore}>Load More</button>
+        <button onClick={loadMore} ref={pageEnd}>
+          Load More
+        </button>
       </div>
     </div>
   );

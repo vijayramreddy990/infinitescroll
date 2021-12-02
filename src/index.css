@@ -20,6 +20,7 @@ code {
   background-color: #1c273a;
   text-align: center;
   color: white;
+  min-height: 100vh;
 }
 h1 {
   text-transform: uppercase;
@@ -39,7 +40,7 @@ h1 {
   border: 2px solid #ddd;
   padding: 10px;
   border-radius: 5px;
-  animation: scale 0.5 linear;
+  animation: scale 0.5s linear;
 }
 @keyframes scale {
   from {
