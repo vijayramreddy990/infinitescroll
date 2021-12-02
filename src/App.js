@@ -12,15 +12,19 @@ const App = () => {
     );
     const data = await res.json();
     console.log(data);
-    setPhotos(data);
+    setPhotos((prevData) => [...prevData, ...data]);
   };
 
   useEffect(() => {
     fetchPhotos(pageNumber);
   }, [pageNumber]);
 
+  const loadMore = () => {
+    setPageNumber((prevPageNumber) => prevPageNumber + 1);
+  };
+
   return (
-    <div>
+    <div className="App">
       <h2>App</h2>
       {photos.map((photo, index) => (
         <div className="photos" key={index}>
@@ -33,7 +37,9 @@ const App = () => {
         <img src={Loading} alt="" />
       </div>
       <h3>{photos.length}</h3>
-      <button>Load More</button>
+      <div>
+        <button onClick={loadMore}>Load More</button>
+      </div>
     </div>
   );
 };
