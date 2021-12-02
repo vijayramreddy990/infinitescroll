@@ -21,20 +21,26 @@ const App = () => {
     fetchPhotos(pageNumber);
   }, [pageNumber]);
 
+  //on scroll functionality
   const pageEnd = useRef();
+  let num = 1;
   useEffect(() => {
     if (loading) {
       const observer = new IntersectionObserver(
         (entries) => {
           if (entries[0].isIntersecting) {
+            num++;
             loadMore();
+            if (num >= 5) {
+              observer.unobserve(pageEnd.current);
+            }
           }
         },
         { threshold: 1 }
       );
       observer.observe(pageEnd.current);
     }
-  }, [loading]);
+  }, [loading, num]);
 
   const loadMore = () => {
     setPageNumber((prevPageNumber) => prevPageNumber + 1);
