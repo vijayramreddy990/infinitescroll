@@ -31,7 +31,7 @@ const App = () => {
           if (entries[0].isIntersecting) {
             num++;
             loadMore();
-            if (num >= 5) {
+            if (num >= 9) {
               observer.unobserve(pageEnd.current);
             }
           }
